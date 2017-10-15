@@ -5,22 +5,31 @@
  */
 package CipherModes;
 
+import java.util.List;
+
 /**
  *
  * @author root
  */
 public class CipherECB 
 {
+    Utilities Utils;
     public CipherECB()
     {
-        
+        Utils = new Utilities();
     }
     
     public String Encrypt(String DecryptedMessage, String Key, String IV)
     {
-        System.out.println("Test");
-        System.out.println("Test");
-        return "";
+        List<String> MessageBlocks = Utils.DivideBytes(DecryptedMessage, 6);
+        String EncryptedResult = "";
+        StringBuilder CipherText = new StringBuilder();
+        for (int i = 0; i < MessageBlocks.size(); i++)
+        {
+            EncryptedResult = Utils.CryptoSystem(MessageBlocks.get(i), Key, 6);
+            CipherText.append(EncryptedResult);
+        }
+        return CipherText.toString();
     }
     
     public String Decrypt(String EncryptedMessage, String DecryptionKey, String IV)
