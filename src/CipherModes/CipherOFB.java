@@ -11,10 +11,10 @@ import java.util.List;
  *
  * @author Pierre-Marc Bonneau
  */
-public class CipherCFB 
+public class CipherOFB 
 {
     Utilities Utils;
-    public CipherCFB()
+    public CipherOFB()
     {
         Utils = new Utilities();
     }
@@ -27,13 +27,13 @@ public class CipherCFB
         // lj
         String TopRegister = "";
         
-        // Cj
+        // Oj
         String MessageXOR = "";
         
-        // Oj
+        // Cj
         String EncryptedResult = "";
         
-        // L(Oj, r)
+        // L(Oj,R)
         String ExtractedLeftBytesFromEncrypted = "";
         
         // mj
@@ -52,6 +52,9 @@ public class CipherCFB
                 EncryptedResult = Utils.CryptoSystem(IV, Key, 6);
                 ExtractedLeftBytesFromEncrypted = Utils.ByteExtractorLeft(EncryptedResult, R);
                 ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(IV, R);
+                
+                // Append the IV to the cipher message
+                CipherText.append(TopRegister);
             }
             // Other iterations, without IV
             else
@@ -64,14 +67,12 @@ public class CipherCFB
             // XOR encrypted R bytes with R bytes from top register
             MessageXOR = Utils.XOR(ExtractedLeftBytesFromEncrypted,ExtractedLeftBytesFromMessage);
             
-            // Append top register content to cipher message
-            CipherText.append(TopRegister);
+            // Append XORed message to cipher message
+            CipherText.append(MessageXOR);
             
-            // Shift top register from R positions
-            TopRegister = Utils.LeftShift(TopRegister, R);
             
-            // Append the XORed result to top register
-            TopRegister = TopRegister + MessageXOR;
+            // Append the encrypted result to top register
+            TopRegister = EncryptedResult;
         }
         return CipherText.toString();
     }

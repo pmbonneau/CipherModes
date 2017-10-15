@@ -38,11 +38,11 @@ public static void main(String[] args)
         options.addOption(mode);
         
         Option iv = new Option("iv", "iv", true, "encryption iv");
-        iv.setRequired(true);
+        iv.setRequired(false);
         options.addOption(iv);
         
         Option r = new Option("r", "r", true, "r value");
-        r.setRequired(true);
+        r.setRequired(false);
         options.addOption(r);
 
         CommandLineParser parser = new DefaultParser();
@@ -74,14 +74,14 @@ public static void main(String[] args)
         System.out.println(string_operation);
         System.out.println(string_mode);
         System.out.println(string_iv);
-        System.out.println(r);
+        System.out.println(string_r);
         
         if (string_mode.equals("ECB"))
         {
             CipherECB ECBmode = new CipherECB();
             if (string_operation.equals("enc"))
             {
-                ECBmode.Encrypt(string_message, string_key, string_iv);
+                System.out.println(ECBmode.Encrypt(string_message, string_key, string_iv));
             }
             else
             if (string_operation.equals("dec"))
@@ -94,7 +94,7 @@ public static void main(String[] args)
             CipherCBC CBCmode = new CipherCBC();
             if (string_operation.equals("enc"))
             {
-                CBCmode.Encrypt(string_message, string_iv, string_key);
+                System.out.println(CBCmode.Encrypt(string_message, string_iv, string_key));
             }
             else
             if (string_operation.equals("dec"))
@@ -107,7 +107,7 @@ public static void main(String[] args)
             CipherCFB CFBmode = new CipherCFB();
             if (string_operation.equals("enc"))
             {
-                CFBmode.Encrypt(string_message, string_iv, string_key, Integer.parseInt(string_r));
+                System.out.println(CFBmode.Encrypt(string_message, string_iv, string_key, Integer.parseInt(string_r)));
             }
             else
             if (string_operation.equals("dec"))
@@ -117,9 +117,10 @@ public static void main(String[] args)
         }
         else if (string_mode.equals("OFB"))
         {
+            CipherOFB OFBmode = new CipherOFB();
             if (string_operation.equals("enc"))
             {
-                
+                System.out.println(OFBmode.Encrypt(string_message, string_iv, string_key, Integer.parseInt(string_r)));
             }
             else
             if (string_operation.equals("dec"))
@@ -129,9 +130,10 @@ public static void main(String[] args)
         }
         else if (string_mode.equals("CTR"))
         {
+            CipherCTR CTRmode = new CipherCTR();
             if (string_operation.equals("enc"))
             {
-                
+                System.out.println(CTRmode.Encrypt(string_message, string_iv, string_key));
             }
             else
             if (string_operation.equals("dec"))

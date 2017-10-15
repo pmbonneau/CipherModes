@@ -11,10 +11,10 @@ import java.util.List;
  *
  * @author Pierre-Marc Bonneau
  */
-public class CipherCBC 
+public class CipherCTR 
 {
     Utilities Utils;
-    public CipherCBC()
+    public CipherCTR()
     {
         Utils = new Utilities();
     }
@@ -24,7 +24,9 @@ public class CipherCBC
         // Mx
         List<String> MessageBlocks = Utils.DivideBytes(DecryptedMessage, 6);
         
-        // Mi XOR Ci - 1
+        // Counter (starts with IV)
+        String Counter = IV;
+        
         String MessageXOR = "";
         
         // Ci
@@ -32,23 +34,24 @@ public class CipherCBC
         
         // C
         StringBuilder CipherText = new StringBuilder();
+        
+        // Adding IV to cipher message at beginning (cipher message starts with IV)
+        CipherText.append(IV);
+
         for (int i = 0; i < MessageBlocks.size(); i++)
         {
-            // Using the IV in the first iteration
-            if (i == 0)
-            {
-                MessageXOR = Utils.XOR(IV,MessageBlocks.get(0));
-            }
-            // For other iterations, using previous encrypted block
-            else
-            {
-                MessageXOR = Utils.XOR(EncryptedResult,MessageBlocks.get(i));
-            }
-            EncryptedResult = Utils.CryptoSystem(MessageXOR, Key, 6);
+            // Encrypting counter
+            EncryptedResult = Utils.CryptoSystem(Counter, Key, 6);
             
-            // Append encrypted block to cipher message
-            CipherText.append(EncryptedResult);
+            // XORed encrypted counter value with message block
+            MessageXOR = Utils.XOR(EncryptedResult,MessageBlocks.get(i));
+            
+            CipherText.append(MessageXOR);
+            
+            // Increment the counter
+            Counter = Utils.BinaryAdd(Counter, "1");
         }
         return CipherText.toString();
     }
+    
 }
