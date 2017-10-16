@@ -44,6 +44,24 @@ public class CipherECB
     
     public String Decrypt(String EncryptedMessage, String DecryptionKey, String IV)
     {
-        return "";
+        // Cx
+        List<String> MessageBlocks = Utils.DivideBytes(EncryptedMessage, 6);
+        
+        // Mi
+        String DecryptedResult = "";
+        
+        // M
+        StringBuilder PlainText = new StringBuilder();
+        
+        // For each blocks
+        for (int i = 0; i < MessageBlocks.size(); i++)
+        {
+            // Decrypt the block with the key
+            DecryptedResult = Utils.CryptoSystem(MessageBlocks.get(i), DecryptionKey, 6);
+            
+            // Add decrypted block to cipher text
+            PlainText.append(DecryptedResult);
+        }
+        return PlainText.toString();
     }
 }

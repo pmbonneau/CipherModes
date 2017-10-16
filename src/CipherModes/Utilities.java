@@ -7,6 +7,7 @@ package CipherModes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -22,6 +23,7 @@ public class Utilities
         return (in) ? '1' : '0';
     }
 
+    // This method does the XOR
     public String XOR(String P, String Q) 
     {
         StringBuilder sb = new StringBuilder();
@@ -34,6 +36,19 @@ public class Utilities
         return result;
     }
     
+    public String GeneratorIV(int Length)
+    {
+        StringBuilder IV = new StringBuilder();
+        for (int i = 0; i < Length; i++)
+        {
+            Random Randomizer = new Random();
+            int bin = Randomizer.nextInt(2);
+            IV.append(String.valueOf(bin));
+        }
+        return IV.toString();
+    }
+    
+    // This is the encryption system
     public String CryptoSystem(String InputMessage, String Key, int Size) 
     {
         List<String> MessageBlocks = new ArrayList<String>();
@@ -53,6 +68,7 @@ public class Utilities
         return CipherMessage.toString();
     }
     
+    // Used to pad the key in the encryption system
     private String KeyPadding(char KeyValue, int BlockSize)
     {
         StringBuilder KeyPadded = new StringBuilder();
@@ -64,6 +80,7 @@ public class Utilities
         return KeyPadded.toString();
     }
     
+    // Used to do some bytes splitting
     public List<String> DivideBytes(String InputMessage, int Size) 
     {
         List<String> result = new ArrayList<String>((InputMessage.length() + Size - 1) / Size);
@@ -76,22 +93,9 @@ public class Utilities
             return result;
         }
         return result;
-    }
+    }   
     
-    public String ByteSwitcher(String InputMessage, int R)
-    {
-        StringBuilder Result = new StringBuilder();
-        for (int i = R - 1; i < InputMessage.length(); i++)
-        {
-            Result.append(InputMessage.charAt(i));
-        }
-        for (int i = 0; i < R - 1; i++)
-        {
-            Result.append(InputMessage.charAt(i));
-        }
-        return Result.toString();
-    }
-    
+    // Extract R bytes from left
     public String ByteExtractorLeft(String InputMessage, int R)
     {
         StringBuilder Result = new StringBuilder();
@@ -102,6 +106,7 @@ public class Utilities
         return Result.toString();
     }
     
+    // Shift bytes from left
     public String LeftShift(String s, int k)
     {
         String result = "";  
@@ -113,6 +118,7 @@ public class Utilities
          return s;
     }
     
+    // Binary addition
     // https://stackoverflow.com/questions/8548586/adding-binary-numbers
     public String BinaryAdd(String s1, String s2) 
     {
@@ -140,6 +146,5 @@ public class Utilities
 
         sb.reverse();
         return String.valueOf(sb);
-    }
-    
+    }   
 }

@@ -75,4 +75,61 @@ public class CipherCFB
         }
         return CipherText.toString();
     }
+    
+    public String Decrypt(String EncryptedMessage, String IV, String DecryptionKey, int R)
+    {
+        // Divide the message in blocks
+        List<String> MessageBlocks = Utils.DivideBytes(EncryptedMessage, 6);
+        
+        // lj
+        String TopRegister = "";
+        
+        // Mj
+        String MessageXOR = "";
+        
+        // Oj
+        String DecryptedResult = "";
+        
+        // L(Oj, r)
+        String ExtractedLeftBytesFromDecrypted = "";
+        
+        // Cj
+        String ExtractedLeftBytesFromMessage = "";
+        
+        // M
+        StringBuilder PlainText = new StringBuilder();
+        
+        // For each blocks
+        for (int i = 0; i < MessageBlocks.size(); i++)
+        {
+            // Using the IV
+            if (i == 0)
+            {
+                TopRegister = IV;
+                DecryptedResult = Utils.CryptoSystem(IV, DecryptionKey, 6);
+                ExtractedLeftBytesFromDecrypted = Utils.ByteExtractorLeft(DecryptedResult, R);
+                ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(IV, R);
+            }
+            // Other iterations, without IV
+            else
+            {
+                DecryptedResult = Utils.CryptoSystem(TopRegister, DecryptionKey, 6);
+                ExtractedLeftBytesFromDecrypted = Utils.ByteExtractorLeft(DecryptedResult, R);
+                ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(TopRegister, R);
+            }
+            
+            // XOR encrypted R bytes with R bytes from top register
+            MessageXOR = Utils.XOR(ExtractedLeftBytesFromDecrypted,ExtractedLeftBytesFromMessage);
+            
+            // Append top register content to cipher message
+            PlainText.append(TopRegister);
+            
+            // Shift top register from R positions
+            TopRegister = Utils.LeftShift(TopRegister, R);
+            
+            // Append the XORed result to top register
+            TopRegister = TopRegister + MessageXOR;
+        }
+        return PlainText.toString();
+    }
 }

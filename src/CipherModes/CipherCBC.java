@@ -24,10 +24,10 @@ public class CipherCBC
         // Mx
         List<String> MessageBlocks = Utils.DivideBytes(DecryptedMessage, 6);
         
-        // Mi XOR Ci - 1
+        // Ci - 1 XOR Mi
         String MessageXOR = "";
         
-        // Ci
+        // Ci, (deviens Ci - 1 pour les itérations après 0).
         String EncryptedResult = "";
         
         // C
@@ -50,5 +50,40 @@ public class CipherCBC
             CipherText.append(EncryptedResult);
         }
         return CipherText.toString();
+    }
+    
+    public String Decrypt(String EncryptedMessage, String DecryptionKey, String IV)
+    {
+        // Cx
+        List<String> MessageBlocks = Utils.DivideBytes(EncryptedMessage, 6);
+        
+        // Ci - 1 XOR Mi
+        String MessageXOR = "";
+        
+        // Mi
+        String DecryptedResult = "";
+        
+        // M
+        StringBuilder PlainText = new StringBuilder();
+        for (int i = 0; i < MessageBlocks.size(); i++)
+        {
+            // Decrypt cipher message bloc
+            DecryptedResult = Utils.CryptoSystem(MessageBlocks.get(i), DecryptionKey, 6);
+                       
+            //Using the IV in the first iteration
+            if (i == 0)
+            {   
+                MessageXOR = Utils.XOR(IV,DecryptedResult);
+                // Addind result to decrypted message
+                PlainText.append(MessageXOR);
+            }
+            // For other iterations, using previous encrypted block
+            else
+            {
+                MessageXOR = Utils.XOR(MessageBlocks.get(i - 1),DecryptedResult);
+                PlainText.append(MessageXOR);
+            }
+        }
+        return PlainText.toString();
     }
 }

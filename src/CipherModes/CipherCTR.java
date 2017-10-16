@@ -54,4 +54,39 @@ public class CipherCTR
         return CipherText.toString();
     }
     
+    public String Decrypt(String EncryptedMessage, String DecryptionKey, String IV)
+    {
+        // Cx
+        List<String> MessageBlocks = Utils.DivideBytes(EncryptedMessage, 6);
+        
+        // Counter (starts with IV)
+        String Counter = IV;
+        
+        String MessageXOR = "";
+        
+        // Mi
+        String DecryptedResult = "";
+        
+        // M
+        StringBuilder PlainText = new StringBuilder();
+        
+        // Adding IV to cipher message at beginning (cipher message starts with IV)
+        PlainText.append(IV);
+
+        for (int i = 0; i < MessageBlocks.size(); i++)
+        {
+            // Encrypting counter
+            DecryptedResult = Utils.CryptoSystem(Counter, DecryptionKey, 6);
+            
+            // XORed encrypted counter value with message block
+            MessageXOR = Utils.XOR(DecryptedResult,MessageBlocks.get(i));
+            
+            PlainText.append(MessageXOR);
+            
+            // Increment the counter
+            Counter = Utils.BinaryAdd(Counter, "1");
+        }
+        return PlainText.toString();
+    }
+    
 }
