@@ -111,7 +111,7 @@ public class CipherOFB
                 ExtractedLeftBytesFromDecrypted = Utils.ByteExtractorLeft(DecryptedResult, R);
                 ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(IV, R);
                 
-                // Append the IV to the cipher message
+                // Append the IV to the decrypted message
                 PlainText.append(TopRegister);
             }
             // Other iterations, without IV
@@ -122,14 +122,14 @@ public class CipherOFB
                 ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(TopRegister, R);
             }
             
-            // XOR encrypted R bytes with R bytes from top register
+            // XOR decrypted R bytes with R bytes from top register
             MessageXOR = Utils.XOR(ExtractedLeftBytesFromDecrypted,ExtractedLeftBytesFromMessage);
             
-            // Append XORed message to cipher message
+            // Append XORed message to decrypted message
             PlainText.append(MessageXOR);
             
             
-            // Append the encrypted result to top register
+            // Append the decrypted result to top register
             TopRegister = DecryptedResult;
         }
         return PlainText.toString();

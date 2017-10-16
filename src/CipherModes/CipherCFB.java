@@ -118,10 +118,10 @@ public class CipherCFB
                 ExtractedLeftBytesFromMessage = Utils.ByteExtractorLeft(TopRegister, R);
             }
             
-            // XOR encrypted R bytes with R bytes from top register
+            // XOR decrypted R bytes with R bytes from top register
             MessageXOR = Utils.XOR(ExtractedLeftBytesFromDecrypted,ExtractedLeftBytesFromMessage);
             
-            // Append top register content to cipher message
+            // Append top register content to decrypted message
             PlainText.append(TopRegister);
             
             // Shift top register from R positions

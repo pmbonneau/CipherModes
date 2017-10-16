@@ -19,7 +19,7 @@ public class CipherECB
         Utils = new Utilities();
     }
     
-    public String Encrypt(String DecryptedMessage, String Key, String IV)
+    public String Encrypt(String DecryptedMessage, String Key)
     {
         // Mx
         List<String> MessageBlocks = Utils.DivideBytes(DecryptedMessage, 6);
@@ -42,7 +42,7 @@ public class CipherECB
         return CipherText.toString();
     }
     
-    public String Decrypt(String EncryptedMessage, String DecryptionKey, String IV)
+    public String Decrypt(String EncryptedMessage, String DecryptionKey)
     {
         // Cx
         List<String> MessageBlocks = Utils.DivideBytes(EncryptedMessage, 6);

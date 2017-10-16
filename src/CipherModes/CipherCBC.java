@@ -27,7 +27,7 @@ public class CipherCBC
         // Ci - 1 XOR Mi
         String MessageXOR = "";
         
-        // Ci, (deviens Ci - 1 pour les itérations après 0).
+        // Ci, (becomes Ci - 1 for other iterations after 0).
         String EncryptedResult = "";
         
         // C

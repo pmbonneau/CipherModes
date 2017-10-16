@@ -70,15 +70,15 @@ public class CipherCTR
         // M
         StringBuilder PlainText = new StringBuilder();
         
-        // Adding IV to cipher message at beginning (cipher message starts with IV)
+        // Adding IV to decrypted message at beginning
         PlainText.append(IV);
 
         for (int i = 0; i < MessageBlocks.size(); i++)
         {
-            // Encrypting counter
+            // Decrypting counter
             DecryptedResult = Utils.CryptoSystem(Counter, DecryptionKey, 6);
             
-            // XORed encrypted counter value with message block
+            // XORed decrypted counter value with message block
             MessageXOR = Utils.XOR(DecryptedResult,MessageBlocks.get(i));
             
             PlainText.append(MessageXOR);

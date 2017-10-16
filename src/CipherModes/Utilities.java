@@ -55,11 +55,15 @@ public class Utilities
         List<String> KeyBlocks = new ArrayList<String>();
         int BlockSize = InputMessage.length() / 6;
         MessageBlocks = DivideBytes(InputMessage, BlockSize);
+        
+        // Padding the key to fit the block size (get same length)
+        // This will allow us to XOR it with message blocks
         for (int i = 0; i < Key.length(); i++)
         {
             KeyBlocks.add(KeyPadding(Key.charAt(i), BlockSize));
         }
         
+        // Encrypting message blocks with the key
         StringBuilder CipherMessage = new StringBuilder();
         for (int i = 0; i < MessageBlocks.size(); i++)
         {
